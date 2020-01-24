@@ -62,7 +62,7 @@
             if(isset($FTL_commit)) { echo " (".$FTL_branch.", ".$FTL_commit.")"; }
             if($FTL_update){ ?> <a class="alert-link lookatme" href="https://github.com/pi-hole/FTL/releases" target="_blank">(Update available!)</a><?php } ?>
         </div>
-        <div style="display: inline-block"><strong><a href="https://pi-hole.net/donate" target="_blank"><i class="fa fa-heart"></i> Donate</a></strong> if you found this useful.</div>
+        <div style="display: inline-block"></div>
     </footer>
 </div>
 <!-- ./wrapper -->

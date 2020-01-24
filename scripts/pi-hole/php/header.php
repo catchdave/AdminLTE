@@ -87,14 +87,19 @@
     $nproc = shell_exec('nproc');
     if(!is_numeric($nproc))
     {
-        $cpuinfo = file_get_contents('/proc/cpuinfo');
-        preg_match_all('/^processor/m', $cpuinfo, $matches);
-        $nproc = count($matches[0]);
+        $nproc = 'n/a';
+        if (file_exists('/proc/cpuinfo')) {
+            $cpuinfo = file_get_contents('/proc/cpuinfo');
+            preg_match_all('/^processor/m', $cpuinfo, $matches);
+            $nproc = count($matches[0]);
+        }
     }
 
     // Get memory usage
-    $data = explode("\n", file_get_contents("/proc/meminfo"));
-    $meminfo = array();
+    $data = []; $meminfo = [];
+    if (file_exists('/proc/meminfo')) {
+        $data = explode("\n", file_get_contents("/proc/meminfo"));
+    }
     if(count($data) > 0)
     {
         foreach ($data as $line) {
@@ -182,7 +187,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.github.com; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'">
+    <!meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.github.com; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'">
     <title>Pi-hole Admin Console</title>
     <!-- Usually browsers proactively perform domain name resolution on links that the user may choose to follow. We disable DNS prefetching here -->
     <meta http-equiv="x-dns-prefetch-control" content="off">
@@ -332,7 +337,7 @@ if($auth) {
                 <div class="pull-left info">
                     <p>Status</p>
                         <?php
-                        $pistatus = exec('sudo pihole status web');
+                        $pistatus = exec('sudo -n pihole status web');
                         if ($pistatus == "1") {
                             echo '<a id="status"><i class="fa fa-circle" style="color:#7FFF00"></i> Active</a>';
                         } elseif ($pistatus == "0") {
@@ -467,6 +472,12 @@ if($auth) {
                         </a>
                     </li>
                   </ul>
+                </li>
+                <!-- Local Domain Names -->
+                <li<?php if($scriptname === "localdomains"){ ?> class="active"<?php } ?>>
+                    <a href="localdomains.php">
+                        <i class="fa fa-check-circle "></i> <span>Local Domain Names</span>
+                    </a>
                 </li>
                 <!-- Whitelist -->
                 <li<?php if($scriptname === "whitelist"){ ?> class="active"<?php } ?>>
