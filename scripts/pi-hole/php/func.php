@@ -262,7 +262,6 @@ if(!function_exists('hash_equals')) {
    }
 }
 
-<<<<<<< HEAD
 function add_regex($regex, $mode=FILE_APPEND, $append="\n")
 {
     global $regexfile;
@@ -280,6 +279,4 @@ function add_regex($regex, $mode=FILE_APPEND, $append="\n")
     }
 }
 
-=======
->>>>>>> upstream/master
 ?>
